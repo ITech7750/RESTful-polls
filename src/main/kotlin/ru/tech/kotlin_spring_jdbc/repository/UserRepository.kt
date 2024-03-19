@@ -1,12 +1,12 @@
 package ru.tech.kotlin_spring_jdbc.repository
 
-import ru.tech.kotlin_spring_jdbc.model.Cargo
+import ru.tech.kotlin_spring_jdbc.model.User
 
-interface CargoRepository {
+interface UserRepository {
 
-    fun getAll(pageIndex: Int): List<Cargo>
+    fun getAll(pageIndex: Int): List<User>
 
-    fun findById(id: Int): Cargo?
+    fun findById(id: Int): User?
 
     fun create(title: String, quantity: Int?): Int
 

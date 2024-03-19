@@ -5,16 +5,16 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.jdbc.support.GeneratedKeyHolder
 import org.springframework.stereotype.Repository
-import ru.tech.kotlin_spring_jdbc.model.Cargo
+import ru.tech.kotlin_spring_jdbc.model.User
 import ru.tech.kotlin_spring_jdbc.util.getIntOrNull
 
 
 @Repository
-class CargoRepositoryImpl(
+class UserRepositoryImpl(
     private val jdbcTemplate: NamedParameterJdbcTemplate,
-) : CargoRepository {
+) : UserRepository {
 
-    override fun getAll(pageIndex: Int): List<Cargo> =
+    override fun getAll(pageIndex: Int): List<User> =
         jdbcTemplate.query(
             "select * from cargo_table order by id limit :limit offset :offset",
             mapOf(
@@ -24,7 +24,7 @@ class CargoRepositoryImpl(
             ROW_MAPPER
         )
 
-    override fun findById(id: Int): Cargo? =
+    override fun findById(id: Int): User? =
         jdbcTemplate.query(
             "select * from cargo_table where id = :id",
             mapOf(
@@ -79,8 +79,8 @@ class CargoRepositoryImpl(
 
     private companion object {
         const val PAGE_SIZE = 3
-        val ROW_MAPPER = RowMapper<Cargo> { rs, _ ->
-            Cargo(
+        val ROW_MAPPER = RowMapper<User> { rs, _ ->
+            User(
                 id = rs.getInt("id"),
                 title = rs.getString("title"),
                 quantity = rs.getIntOrNull("quantity"),

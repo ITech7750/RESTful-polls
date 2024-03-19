@@ -1,30 +1,30 @@
 package ru.tech.kotlin_spring_jdbc.service
 
 import org.springframework.stereotype.Service
-import ru.devmark.cargo.exception.CargoNotFoundException
-import ru.tech.kotlin_spring_jdbc.dto.CargoDto
-import ru.tech.kotlin_spring_jdbc.model.Cargo
-import ru.tech.kotlin_spring_jdbc.repository.CargoRepository
+import ru.devmark.cargo.exception.UserNotFoundException
+import ru.tech.kotlin_spring_jdbc.dto.UserDto
+import ru.tech.kotlin_spring_jdbc.model.User
+import ru.tech.kotlin_spring_jdbc.repository.UserRepository
 
 
 @Service
 class CargoServiceImpl(
-    private val cargoRepository: CargoRepository,
+        private val cargoRepository: UserRepository,
 ) : CargoService {
 
-    override fun getAll(pageIndex: Int): List<CargoDto> =
+    override fun getAll(pageIndex: Int): List<UserDto> =
         cargoRepository.getAll(pageIndex)
             .map { it.toDto() }
 
-    override fun getById(id: Int): CargoDto =
+    override fun getById(id: Int): UserDto =
         cargoRepository.findById(id)
             ?.toDto()
-            ?: throw CargoNotFoundException(id)
+            ?: throw UserNotFoundException(id)
 
-    override fun create(dto: CargoDto): Int =
+    override fun create(dto: UserDto): Int =
         cargoRepository.create(dto.title, dto.quantity)
 
-    override fun update(id: Int, dto: CargoDto) {
+    override fun update(id: Int, dto: UserDto) {
         cargoRepository.update(id, dto.title, dto.quantity)
     }
 
@@ -35,7 +35,7 @@ class CargoServiceImpl(
     override fun getCarStatistics(): Map<String, Int> =
         cargoRepository.getCarStatistics()
 
-    private fun Cargo.toDto() = CargoDto(
+    private fun User.toDto() = UserDto(
         id = id,
         title = title,
         quantity = quantity,

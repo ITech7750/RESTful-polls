@@ -1,5 +1,8 @@
 package ru.tech.kotlin_spring_jdbc.controller
 
+
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -9,39 +12,52 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
-import ru.tech.kotlin_spring_jdbc.dto.CargoDto
+import ru.tech.kotlin_spring_jdbc.dto.UserDto
 import ru.tech.kotlin_spring_jdbc.service.CargoService
 
 
 @RestController
-@RequestMapping("/cargo")
-class CargoController(
-    private val cargoService: CargoService,
+@RequestMapping("api/v1")
+@Tag(
+    name = "Пользователи",
+    description = "Все методы для работы с пользователями системы",
+)
+
+class RestController(
+        private val serverService: CargoService,
 ) {
 
     @GetMapping
+    @Operation(method = "Получение всех пользователей со страницы")
     fun getAll(
         @RequestParam("page") pageIndex: Int,
-    ): List<CargoDto> = cargoService.getAll(pageIndex)
+    ): List<UserDto> = serverService.getAll(pageIndex)
 
     @GetMapping("/{id}")
-    fun getById(@PathVariable id: Int): CargoDto = cargoService.getById(id)
+    @Operation(method = "Получение пользователя по id")
+    fun getById(@PathVariable id: Int): UserDto = serverService.getById(id)
 
     @GetMapping("/statistics")
+    @Operation(method = "Статистика пользователей")
     fun getCarStatistics(): Map<String, Int> =
-        cargoService.getCarStatistics()
+        serverService.getCarStatistics()
 
     @PostMapping
-    fun create(@RequestBody dto: CargoDto): Int =
-        cargoService.create(dto)
+    @Operation(method = "Создать новую учетную запись")
+    fun create(@RequestBody dto: UserDto): Int =
+        serverService.create(dto)
 
     @PutMapping("/{id}")
-    fun update(@PathVariable id: Int, @RequestBody dto: CargoDto) {
-        cargoService.update(id, dto)
+    @Operation(method = "Изменить учетную запись")
+    fun update(@PathVariable id: Int, @RequestBody dto: UserDto) {
+        serverService.update(id, dto)
     }
 
     @DeleteMapping("/{id}")
+    @Operation(method = "Удалить учетную запись")
     fun deleteById(@PathVariable id: Int) {
-        cargoService.deleteById(id)
+        serverService.deleteById(id)
     }
+
+
 }
